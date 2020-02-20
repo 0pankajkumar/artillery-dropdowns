@@ -1,26 +1,103 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// const data = {
+//   campus: {
+//     all: ["a", "b", "c"],
+//     design: ["d", "e", "f"],
+//     "Product Management": ["g", "h", "i"]
+//   },
+//   codechef: {
+//     all: ["a", "b", "c"],
+//     design: ["d", "e", "f"],
+//     "Software Engineering": ["g", "h", "i"]
+//   },
+//   flock: {
+//     all: ["a", "b", "c"],
+//     design: ["d", "e", "f"],
+//     Marketing: ["g", "h", "i"]
+//   }
+// };
+
+class Artillery extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      info: [
+        {
+          company: "campus",
+          dept: "design",
+          post: "UI developer"
+        },
+        {
+          company: "flock",
+          dept: "product",
+          post: "Product manger"
+        },
+        {
+          company: "campus",
+          dept: "engineering",
+          post: "Software engineer - Frontend"
+        }
+      ],
+      selectedCompanies: [],
+      selectedDept: [],
+      selectedPost: []
+    };
+    this.handleCompany = this.handleCompany.bind(this);
+  }
+
+  handleCompany = (event, values) => {
+    this.setState(
+      {
+        selectedCompanies: values
+      },
+      () => {
+        console.log(this.state.selectedCompanies);
+      }
+    );
+  };
+
+  render() {
+    return (
+      <div>
+        <br></br>
+        <Autocomplete
+          id="combo-box-demo"
+          options={this.state.info}
+          getOptionLabel={option => option.company}
+          style={{ width: 200 }}
+          onChange={this.handleCompany}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label="Company"
+              variant="outlined"
+              fullWidth
+            />
+          )}
+        />
+        <br></br>
+        <Autocomplete
+          id="combo-box-demo2"
+          options={this.state.info}
+          getOptionLabel={option => option.company}
+          style={{ width: 200 }}
+          onChange={this.handleCompany}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label="Department"
+              variant="outlined"
+              fullWidth
+            />
+          )}
+        />
+      </div>
+    );
+  }
 }
 
-export default App;
+export default Artillery;
