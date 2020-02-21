@@ -24,9 +24,6 @@ class Artillery extends Component {
           post: "Software engineer - Frontend"
         }
       ],
-      selectedCompanies: [],
-      selectedDept: [],
-      selectedPost: [],
       options_for_company: [],
       options_for_dept: [],
       options_for_post: []
@@ -41,45 +38,27 @@ class Artillery extends Component {
   }
 
   handleCompany = (event, values) => {
-    this.setState(
-      {
-        selectedCompanies: values.company
-      },
-      () => {
-        console.log(this.state.selectedCompanies);
+    // populate options_for_dept
+    let temp = this.state.info.map(element => {
+      if (this.state.options_for_company.includes(element.company)) {
+        return "Hello";
+      } else {
+        return "Bye";
       }
-    );
+    });
+    // console.log(temp);
+    this.setState({
+      options_for_dept: temp
+    });
   };
 
-  handleDept = (event, values) => {
-    this.setState(
-      {
-        selectedDept: values.dept
-      },
-      () => {
-        console.log(this.state.selectedDept);
-      }
-    );
-  };
+  handleDept = (event, values) => {};
 
-  handlePost = (event, values) => {
-    this.setState(
-      {
-        selectedPost: values.post
-      },
-      () => {
-        console.log(this.state.selectedPost);
-      }
-    );
-  };
+  handlePost = (event, values) => {};
 
-  getDept = info => {
-    return this.state.selectedCompanies.includes(info.company);
-  };
+  getDept = info => {};
 
-  getPost = info => {
-    return this.state.selectedDept.includes(info.dept);
-  };
+  getPost = info => {};
 
   render() {
     return (
@@ -87,8 +66,8 @@ class Artillery extends Component {
         <br></br>
         <Autocomplete
           id="combo-box-company"
-          options={this.state.info}
-          getOptionLabel={option => option.company}
+          options={this.state.options_for_company}
+          getOptionLabel={option => option}
           style={{ width: 200 }}
           onChange={this.handleCompany}
           renderInput={params => (
