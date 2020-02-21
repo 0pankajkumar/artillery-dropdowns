@@ -3,24 +3,6 @@ import "./App.css";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-// const data = {
-//   campus: {
-//     all: ["a", "b", "c"],
-//     design: ["d", "e", "f"],
-//     "Product Management": ["g", "h", "i"]
-//   },
-//   codechef: {
-//     all: ["a", "b", "c"],
-//     design: ["d", "e", "f"],
-//     "Software Engineering": ["g", "h", "i"]
-//   },
-//   flock: {
-//     all: ["a", "b", "c"],
-//     design: ["d", "e", "f"],
-//     Marketing: ["g", "h", "i"]
-//   }
-// };
-
 class Artillery extends Component {
   constructor(props) {
     super(props);
@@ -37,22 +19,31 @@ class Artillery extends Component {
           post: "Product manger"
         },
         {
-          company: "campus",
+          company: "radix",
           dept: "engineering",
           post: "Software engineer - Frontend"
         }
       ],
       selectedCompanies: [],
       selectedDept: [],
-      selectedPost: []
+      selectedPost: [],
+      options_for_company: [],
+      options_for_dept: [],
+      options_for_post: []
     };
     this.handleCompany = this.handleCompany.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      options_for_company: this.state.info.map(p => p.company)
+    });
   }
 
   handleCompany = (event, values) => {
     this.setState(
       {
-        selectedCompanies: values
+        selectedCompanies: values.company
       },
       () => {
         console.log(this.state.selectedCompanies);
@@ -60,12 +51,42 @@ class Artillery extends Component {
     );
   };
 
+  handleDept = (event, values) => {
+    this.setState(
+      {
+        selectedDept: values.dept
+      },
+      () => {
+        console.log(this.state.selectedDept);
+      }
+    );
+  };
+
+  handlePost = (event, values) => {
+    this.setState(
+      {
+        selectedPost: values.post
+      },
+      () => {
+        console.log(this.state.selectedPost);
+      }
+    );
+  };
+
+  getDept = info => {
+    return this.state.selectedCompanies.includes(info.company);
+  };
+
+  getPost = info => {
+    return this.state.selectedDept.includes(info.dept);
+  };
+
   render() {
     return (
       <div>
         <br></br>
         <Autocomplete
-          id="combo-box-demo"
+          id="combo-box-company"
           options={this.state.info}
           getOptionLabel={option => option.company}
           style={{ width: 200 }}
@@ -81,15 +102,31 @@ class Artillery extends Component {
         />
         <br></br>
         <Autocomplete
-          id="combo-box-demo2"
-          options={this.state.info}
-          getOptionLabel={option => option.company}
+          id="combo-box-dept"
+          options={this.state.info.filter(this.getDept)}
+          getOptionLabel={option => option.dept}
           style={{ width: 200 }}
-          onChange={this.handleCompany}
+          onChange={this.handleDept}
           renderInput={params => (
             <TextField
               {...params}
               label="Department"
+              variant="outlined"
+              fullWidth
+            />
+          )}
+        />
+        <br></br>
+        <Autocomplete
+          id="combo-box-post"
+          options={this.state.info.filter(this.getPost)}
+          getOptionLabel={option => option.post}
+          style={{ width: 200 }}
+          onChange={this.handlePost}
+          renderInput={params => (
+            <TextField
+              {...params}
+              label="Posting"
               variant="outlined"
               fullWidth
             />
