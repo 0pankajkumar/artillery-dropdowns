@@ -10,7 +10,7 @@ class Artillery extends Component {
       info: [
         {
           company: "campus",
-          dept: "design",
+          dept: "HR",
           post: "UI developer"
         },
         {
@@ -22,37 +22,81 @@ class Artillery extends Component {
           company: "radix",
           dept: "engineering",
           post: "Software engineer - Frontend"
+        },
+        {
+          company: "radix",
+          dept: "design",
+          post: "UX Superstar"
         }
       ],
       options_for_company: [],
       options_for_dept: [],
-      options_for_post: []
+      options_for_post: [],
+      optionsArray_for_company: [],
+      optionsArray_for_dept: [],
+      optionsArray_for_post: [],
+      flag0: 0,
+      flag1: 0,
+      flag2: 0
     };
     this.handleCompany = this.handleCompany.bind(this);
   }
 
   componentDidMount() {
     this.setState({
-      options_for_company: this.state.info.map(p => p.company)
+      options_for_company: this.state.info //.map(p => p.company)
     });
   }
 
   handleCompany = (event, values) => {
     // populate options_for_dept
-    let temp = this.state.info.map(element => {
-      if (this.state.options_for_company.includes(element.company)) {
-        return "Hello";
-      } else {
-        return "Bye";
+    console.log("Values are ", values);
+    let temp = this.state.options_for_company.filter(ele => {
+      let flag = false;
+      for (let p of values) {
+        if (p.company === ele.company) {
+          flag = true;
+          break;
+        }
       }
+      return flag;
     });
-    // console.log(temp);
+
+    console.log("At the end temp is ", temp);
+
+    let temp2 = [];
+    for (let p of temp) {
+      temp2.push(p.dept);
+    }
+
     this.setState({
-      options_for_dept: temp
+      options_for_dept: temp,
+      optionsArray_for_dept: temp2,
+      flag1: this.state.flag1 === 1 ? 0 : 1,
+      flag2: this.state.flag2 === 1 ? 0 : 1
     });
   };
 
-  handleDept = (event, values) => {};
+  handleDept = (event, values) => {
+    // populate options_for_dept
+    console.log("Values are ", values);
+    let temp = this.state.options_for_dept.filter(ele => {
+      let flag = false;
+      for (let p of values) {
+        if (p.dept === ele.dept) {
+          flag = true;
+          break;
+        }
+      }
+      return flag;
+    });
+
+    console.log("At the end temp is ", temp);
+
+    this.setState({
+      options_for_post: temp
+    });
+  };
 
   handlePost = (event, values) => {};
 
@@ -60,16 +104,24 @@ class Artillery extends Component {
 
   getPost = info => {};
 
+  company_box_changed = e => {
+    console.log("It chnages");
+  };
+
   render() {
     return (
       <div>
         <br></br>
         <Autocomplete
+          multiple
+          filterSelectedOptions
           id="combo-box-company"
           options={this.state.options_for_company}
-          getOptionLabel={option => option}
+          getOptionLabel={option => option.company}
           style={{ width: 200 }}
           onChange={this.handleCompany}
+          onInputChange={this.company_box_changed}
+          size={"small"}
           renderInput={params => (
             <TextField
               {...params}
@@ -81,11 +133,15 @@ class Artillery extends Component {
         />
         <br></br>
         <Autocomplete
+          multiple
+          filterSelectedOptions
+          key={this.state.flag1}
           id="combo-box-dept"
-          options={this.state.info.filter(this.getDept)}
+          options={this.state.options_for_dept}
           getOptionLabel={option => option.dept}
           style={{ width: 200 }}
           onChange={this.handleDept}
+          size={"small"}
           renderInput={params => (
             <TextField
               {...params}
@@ -97,8 +153,10 @@ class Artillery extends Component {
         />
         <br></br>
         <Autocomplete
+          multiple
           id="combo-box-post"
-          options={this.state.info.filter(this.getPost)}
+          key={this.state.flag2}
+          options={this.state.options_for_post}
           getOptionLabel={option => option.post}
           style={{ width: 200 }}
           onChange={this.handlePost}
@@ -111,6 +169,14 @@ class Artillery extends Component {
             />
           )}
         />
+        <button
+          onClick={() =>
+            this.setState({ kumar: this.state.kumar === 1 ? 0 : 1 })
+          }
+        >
+          {" "}
+          Ye
+        </button>
       </div>
     );
   }
