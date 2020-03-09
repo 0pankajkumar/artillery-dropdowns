@@ -34,10 +34,7 @@ class Artillery extends Component {
       options_for_post: [],
       optionsArray_for_company: [],
       optionsArray_for_dept: [],
-      optionsArray_for_post: [],
-      flag0: 0,
-      flag1: 0,
-      flag2: 0
+      optionsArray_for_post: []
     };
     this.handleCompany = this.handleCompany.bind(this);
   }
@@ -71,9 +68,7 @@ class Artillery extends Component {
 
     this.setState({
       options_for_dept: temp,
-      optionsArray_for_dept: temp2,
-      flag1: this.state.flag1 === 1 ? 0 : 1,
-      flag2: this.state.flag2 === 1 ? 0 : 1
+      optionsArray_for_dept: temp2
     });
   };
 
@@ -135,7 +130,6 @@ class Artillery extends Component {
         <Autocomplete
           multiple
           filterSelectedOptions
-          key={this.state.flag1}
           id="combo-box-dept"
           options={this.state.options_for_dept}
           getOptionLabel={option => option.dept}
@@ -155,7 +149,6 @@ class Artillery extends Component {
         <Autocomplete
           multiple
           id="combo-box-post"
-          key={this.state.flag2}
           options={this.state.options_for_post}
           getOptionLabel={option => option.post}
           style={{ width: 200 }}
@@ -169,14 +162,6 @@ class Artillery extends Component {
             />
           )}
         />
-        <button
-          onClick={() =>
-            this.setState({ kumar: this.state.kumar === 1 ? 0 : 1 })
-          }
-        >
-          {" "}
-          Ye
-        </button>
       </div>
     );
   }
